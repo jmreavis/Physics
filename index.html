@@ -31,6 +31,14 @@
       }
 
       create() {
+        let level = this.add.text(10, 10, "Level 1");
+        level.setScale(2);
+
+        const reset = this.add.text(600, 800, "Reset");
+        reset.setScale(2);
+        reset.setInteractive();
+        reset.on('pointerdown', () => this.scene.start('level1'));
+
         let goal = this.matter.add.image(600, 150, "star").setStatic(true);
         goal.setScale(.03);
         this.matter.world.setBounds();
@@ -107,6 +115,14 @@
       }
 
       create() {
+        let level = this.add.text(10, 10, "Level 2");
+        level.setScale(2);
+
+        const reset = this.add.text(600, 800, "Reset");
+        reset.setScale(2);
+        reset.setInteractive();
+        reset.on('pointerdown', () => this.scene.start('level2'));
+
         let goal = this.matter.add.image(600, 150, "star").setStatic(true);
         goal.setScale(.03);
         this.matter.world.setBounds();
@@ -198,7 +214,16 @@
       }
 
       create() {
-        let goal = this.matter.add.image(600, 150, "star").setStatic(true);
+        let level = this.add.text(10, 10, "Level 3");
+        level.setScale(2);
+        
+
+        const reset = this.add.text(450, 800, "Reset");
+        reset.setScale(2);
+        reset.setInteractive();
+        reset.on('pointerdown', () => this.scene.start('level3'));
+
+        let goal = this.matter.add.image(1150, 750, "star").setStatic(true);
         goal.setScale(.03);
         this.matter.world.setBounds();
 
@@ -221,31 +246,66 @@
             }
         });
         
-        const cube = this.matter.add.rectangle(750, 150, 50, 50);
+        const cube = this.matter.add.rectangle(425, 150, 50, 50);
 
         this.matter.add.rectangle(120, 690, 220, 380, {
             isStatic: true,
             chamfer: { radius: 20 }
         }),
 
-        this.matter.add.rectangle(900, 690, 220, 380, {
+        this.matter.add.rectangle(475, 350, 80, 50, {
+          isStatic: true,
+          chamfer: {radius: 10}
+        }),
+
+        this.matter.add.rectangle(650, 350, 80, 50, {
+          isStatic: true,
+          chamfer: {radius: 10}
+        }),
+
+        this.matter.add.rectangle(800, 350, 80, 50, {
+          isStatic: true,
+          chamfer: {radius: 10}
+        }),
+
+        this.matter.add.rectangle(300, 350, 80, 50, {
+          isStatic: true,
+          chamfer: {radius: 10}
+        }),
+
+        this.matter.add.rectangle(1100, 530, 30, 500, {
+            isStatic: true,
+            chamfer: { radius: 10 }
+        }),
+
+        this.matter.add.rectangle(1200, 530, 30, 500, {
+            isStatic: true,
+            chamfer: { radius: 10 }
+        }),
+
+        this.matter.add.rectangle(1150, 800, 125, 30, {
+            isStatic: true,
+            chamfer: { radius: 10 }
+        }),
+
+        this.matter.add.rectangle(850, 690, 220, 380, {
             isStatic: true,
             chamfer: { radius: 20 }
         }),
 
         this.matter.add.worldConstraint(bridge.bodies[0], 2, 0.9, {
-            pointA: { x: 215, y: 500 },
+            pointA: { x: 200, y: 500 },
             pointB: { x: -25, y: 0 }
         });
 
         this.matter.add.worldConstraint(bridge.bodies[bridge.bodies.length - 1], 2, 0.9, {
-            pointA: { x: 800, y: 500 },
+            pointA: { x: 750, y: 500 },
             pointB: { x: 25, y: 0 }
         });
         
         goal.setOnCollideWith(cube, () =>{
         console.log("collided")
-        this.scene.start('break2');
+        this.scene.start('finish');
       })
       }
     }
@@ -253,6 +313,11 @@
     class Finish extends Phaser.Scene {
       constructor() {
         super('finish');
+      }
+      create() {
+        this.add.text(10, 10, "Congratulations! You won!");
+        this.add.text(10, 30, "Click to play again");
+        this.input.on('pointerdown', () => this.scene.start('intro'));
       }
     }
 
@@ -269,7 +334,7 @@
             debugBodyColor: 0xffffff
         }
       },
-      scene: [Level3],
+      scene: [Intro, Level1, Break1, Level2, Break2, Level3, Finish],
     });
   </script>
 </head>
