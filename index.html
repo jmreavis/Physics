@@ -25,11 +25,72 @@
       constructor() {
         super('level1');
       }
-    }
+
+      preload() {
+        this.load.image("star", "/assets/star.png");
+      }
+
+      create() {
+        let goal = this.matter.add.image(600, 150, "star").setStatic(true);
+        goal.setScale(.03);
+        this.matter.world.setBounds();
+
+        this.matter.add.mouseSpring();
+
+        const group = this.matter.world.nextGroup(true);
+
+        const bridge = this.matter.add.stack(160, 290, 15, 1, 0, 0, (x, y) => Phaser.Physics.Matter.Matter.Bodies.rectangle(x - 20, y, 53, 20, {
+            collisionFilter: { group: group },
+            chamfer: 5,
+            density: 0.005,
+            frictionAir: 0.05
+        }));
+        
+        this.matter.add.chain(bridge, 0.3, 0, -0.3, 0, {
+            stiffness: 1,
+            length: 0,
+            render: {
+                visible: false
+            }
+        });
+        
+        const cube = this.matter.add.stack(800, 50, 1, 1, 0, 0, (x, y) => Phaser.Physics.Matter.Matter.Bodies.rectangle(x, y, 50, 50, Phaser.Math.Between(20, 40)));
+
+        this.matter.add.rectangle(320, 690, 220, 380, {
+            isStatic: true,
+            chamfer: { radius: 20 }
+        }),
+
+        this.matter.add.rectangle(1000, 690, 220, 380, {
+            isStatic: true,
+            chamfer: { radius: 20 }
+        }),
+
+        this.matter.add.worldConstraint(bridge.bodies[0], 2, 0.9, {
+            pointA: { x: 415, y: 500 },
+            pointB: { x: -25, y: 0 }
+        });
+
+        this.matter.add.worldConstraint(bridge.bodies[bridge.bodies.length - 1], 2, 0.9, {
+            pointA: { x: 900, y: 500 },
+            pointB: { x: 25, y: 0 }
+        });
+        
+        // this.matter.world.on('collisionstart', (goal, cube) =>
+        // {
+        //     this.scene.start('break1');
+        // });
+      }
+  
+}
 
     class Break1 extends Phaser.Scene {
       constructor() {
         super('break1');
+      }
+
+      create() {
+        this.add.text(10, 10, "You beat level 1!");
       }
     }
 
@@ -58,8 +119,8 @@
     }
 
     new Phaser.Game({
-      width: 800,
-      height: 600,
+      width: 1400,
+      height: 1000,
       physics: {
         default: 'matter',
         matter: {
@@ -70,7 +131,7 @@
             debugBodyColor: 0xffffff
         }
       },
-      scene: [Intro, Level1],
+      scene: [Level1, Break1],
     });
   </script>
 </head>
