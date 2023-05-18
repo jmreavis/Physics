@@ -92,6 +92,8 @@
       create() {
         this.add.text(10, 10, "You beat level 1! That was pretty easy, wasn't it?");
         this.add.text(10, 30, "Level 2 should be just as easy... right?");
+        this.add.text(10, 50, "Click to find out...");
+        this.input.on('pointerdown', () => this.scene.start('level2'));
       }
     }
 
@@ -99,17 +101,152 @@
       constructor() {
         super('level2');
       }
+
+      preload() {
+        this.load.image("star", "/assets/star.png");
+      }
+
+      create() {
+        let goal = this.matter.add.image(600, 150, "star").setStatic(true);
+        goal.setScale(.03);
+        this.matter.world.setBounds();
+
+        this.matter.add.mouseSpring();
+
+        const group = this.matter.world.nextGroup(true);
+
+        const bridge = this.matter.add.stack(160, 290, 15, 1, 0, 0, (x, y) => Phaser.Physics.Matter.Matter.Bodies.rectangle(x - 20, y, 53, 20, {
+            collisionFilter: { group: group },
+            chamfer: 5,
+            density: 0.005,
+            frictionAir: 0.05
+        }));
+        
+        this.matter.add.chain(bridge, 0.3, 0, -0.3, 0, {
+            stiffness: 1,
+            length: 0,
+            render: {
+                visible: false
+            }
+        });
+        
+        const cube = this.matter.add.rectangle(750, 150, 50, 50);
+
+        this.matter.add.rectangle(320, 690, 220, 380, {
+            isStatic: true,
+            chamfer: { radius: 20 }
+        }),
+
+        this.matter.add.rectangle(500, 350, 80, 50, {
+          isStatic: true,
+          chamfer: {radius: 10}
+        }),
+
+        this.matter.add.rectangle(650, 350, 80, 50, {
+          isStatic: true,
+          chamfer: {radius: 10}
+        }),
+
+        this.matter.add.rectangle(800, 350, 80, 50, {
+          isStatic: true,
+          chamfer: {radius: 10}
+        }),
+
+        this.matter.add.rectangle(1000, 690, 220, 380, {
+            isStatic: true,
+            chamfer: { radius: 20 }
+        }),
+
+        this.matter.add.worldConstraint(bridge.bodies[0], 2, 0.9, {
+            pointA: { x: 415, y: 500 },
+            pointB: { x: -25, y: 0 }
+        });
+
+        this.matter.add.worldConstraint(bridge.bodies[bridge.bodies.length - 1], 2, 0.9, {
+            pointA: { x: 900, y: 500 },
+            pointB: { x: 25, y: 0 }
+        });
+        
+        goal.setOnCollideWith(cube, () =>{
+        console.log("collided")
+        this.scene.start('break2');
+      })
+      }
     }
 
     class Break2 extends Phaser.Scene {
       constructor() {
         super('break2');
       }
+
+      create() {
+        this.add.text(10, 10, "You made it! Good job.");
+        this.add.text(10, 30, "I hope you enjoyed those little obstacles I threw in.");
+        this.add.text(10, 50, "There definitely won't be more in the next level...trust me.");
+        this.add.text(10, 70, "Click to see for yourself...");
+        this.input.on('pointerdown', () => this.scene.start('level3'));
+      }
     }
 
     class Level3 extends Phaser.Scene {
       constructor() {
         super('level3');
+      }
+
+      preload() {
+        this.load.image("star", "/assets/star.png");
+      }
+
+      create() {
+        let goal = this.matter.add.image(600, 150, "star").setStatic(true);
+        goal.setScale(.03);
+        this.matter.world.setBounds();
+
+        this.matter.add.mouseSpring();
+
+        const group = this.matter.world.nextGroup(true);
+
+        const bridge = this.matter.add.stack(160, 290, 15, 1, 0, 0, (x, y) => Phaser.Physics.Matter.Matter.Bodies.rectangle(x - 20, y, 53, 20, {
+            collisionFilter: { group: group },
+            chamfer: 5,
+            density: 0.005,
+            frictionAir: 0.05
+        }));
+        
+        this.matter.add.chain(bridge, 0.3, 0, -0.3, 0, {
+            stiffness: 1,
+            length: 0,
+            render: {
+                visible: false
+            }
+        });
+        
+        const cube = this.matter.add.rectangle(750, 150, 50, 50);
+
+        this.matter.add.rectangle(120, 690, 220, 380, {
+            isStatic: true,
+            chamfer: { radius: 20 }
+        }),
+
+        this.matter.add.rectangle(900, 690, 220, 380, {
+            isStatic: true,
+            chamfer: { radius: 20 }
+        }),
+
+        this.matter.add.worldConstraint(bridge.bodies[0], 2, 0.9, {
+            pointA: { x: 215, y: 500 },
+            pointB: { x: -25, y: 0 }
+        });
+
+        this.matter.add.worldConstraint(bridge.bodies[bridge.bodies.length - 1], 2, 0.9, {
+            pointA: { x: 800, y: 500 },
+            pointB: { x: 25, y: 0 }
+        });
+        
+        goal.setOnCollideWith(cube, () =>{
+        console.log("collided")
+        this.scene.start('break2');
+      })
       }
     }
 
@@ -132,7 +269,7 @@
             debugBodyColor: 0xffffff
         }
       },
-      scene: [Level1, Break1],
+      scene: [Level3],
     });
   </script>
 </head>
