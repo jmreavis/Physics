@@ -6,3 +6,4 @@
 - Indirect goal achievement: The player can only win by correctly aiming the slingshot and hitting the star
 - 3 physics-based scenes: Levels 1-3
 - Phaser scenes: Intro, Breaks 1 and 2, and Finish
+- Assets: Star png image via freepik.com/free-photos-vectors/star-clip-art. Scaled down via Krita
