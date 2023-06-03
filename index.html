@@ -39,7 +39,7 @@
         reset.setInteractive();
         reset.on('pointerdown', () => this.scene.start('level1'));
 
-        let goal = this.matter.add.image(100, 100, "star").setStatic(true);
+        let goal = this.matter.add.image(100, 250, "star").setStatic(true);
         goal.setScale(.01);
         this.matter.world.setBounds();
 
