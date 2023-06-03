@@ -34,20 +34,20 @@
         let level = this.add.text(10, 10, "Level 1");
         level.setScale(2);
 
-        const reset = this.add.text(600, 800, "Reset");
+        const reset = this.add.text(150, 700, "Reset");
         reset.setScale(2);
         reset.setInteractive();
         reset.on('pointerdown', () => this.scene.start('level1'));
 
-        let goal = this.matter.add.image(600, 150, "star").setStatic(true);
-        goal.setScale(.03);
+        let goal = this.matter.add.image(100, 100, "star").setStatic(true);
+        goal.setScale(.01);
         this.matter.world.setBounds();
 
         this.matter.add.mouseSpring();
 
         const group = this.matter.world.nextGroup(true);
 
-        const bridge = this.matter.add.stack(160, 290, 15, 1, 0, 0, (x, y) => Phaser.Physics.Matter.Matter.Bodies.rectangle(x - 20, y, 53, 20, {
+        const bridge = this.matter.add.stack(160, 290, 5, 1, 0, 0, (x, y) => Phaser.Physics.Matter.Matter.Bodies.rectangle(x - 20, y, 53, 20, {
             collisionFilter: { group: group },
             chamfer: 5,
             density: 0.005,
@@ -62,31 +62,31 @@
             }
         });
         
-        const cube = this.matter.add.rectangle(800, 150, 50, 50);
+        const cube = this.matter.add.rectangle(190, 150, 25, 25);
 
-        this.matter.add.rectangle(320, 690, 220, 380, {
+        this.matter.add.rectangle(85, 550, 60, 300, {
             isStatic: true,
             chamfer: { radius: 20 }
         }),
 
-        this.matter.add.rectangle(1000, 690, 220, 380, {
+        this.matter.add.rectangle(298, 550, 60, 300, {
             isStatic: true,
             chamfer: { radius: 20 }
         }),
 
         this.matter.add.worldConstraint(bridge.bodies[0], 2, 0.9, {
-            pointA: { x: 415, y: 500 },
+            pointA: { x: 120, y: 400 },
             pointB: { x: -25, y: 0 }
         });
 
         this.matter.add.worldConstraint(bridge.bodies[bridge.bodies.length - 1], 2, 0.9, {
-            pointA: { x: 900, y: 500 },
+            pointA: { x: 260, y: 400 },
             pointB: { x: 25, y: 0 }
         });
         
         goal.setOnCollideWith(cube, () =>{
         console.log("collided")
-        this.scene.start('break1');
+        this.scene.start('finish');
       })
       }
   
@@ -322,8 +322,8 @@
     }
 
     new Phaser.Game({
-      width: 1400,
-      height: 1000,
+      width: 400,
+      height: 800,
       physics: {
         default: 'matter',
         matter: {
